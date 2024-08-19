@@ -32,10 +32,13 @@ export class OccurrenceService {
     });
   }
 
+  // user list his occurrences
   async list() {}
 
+  // admin list all occurrences
   async listWithPagination() {}
 
+  // update in occurrence entity
   async resolveOccurrence() {}
 
   async deleteUnresolvedOccurrence() {}
