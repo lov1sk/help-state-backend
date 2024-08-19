@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  help-state-dev-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=docker
+
+    networks:
+      - custom_network
+
+  app:
+    depends_on:
+      - help-state-dev-pg
+    build: .
+    command: sh -c "npm run typeorm:run-migrations-dev && npm run start:prod"
+    ports:
+      - '3333:3333'
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    networks:
+      - custom_network
+
+networks:
+  custom_network:
+    driver: bridge
