@@ -13,9 +13,17 @@ services:
     networks:
       - custom_network
 
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
   app:
     depends_on:
-      - help-state-dev-pg
+      help-state-dev-pg:
+        condition: service_healthy
     build: .
     command: sh -c "npm run typeorm:run-migrations-dev && npm run start:prod"
     ports:
